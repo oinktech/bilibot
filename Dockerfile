@@ -12,7 +12,10 @@ RUN apt-get update && \
 
 # 克隆项目
 RUN git clone -b patch-1 https://github.com/oinktech/bilibot.git .
-RUN ls
+
+# 确保 requirements.txt 文件存在
+RUN ls -l && echo "Contents of requirements.txt:" && cat requirements.txt
+
 # 安装项目依赖
 RUN pip install --no-cache-dir -r requirements.txt
 
