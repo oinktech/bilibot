@@ -1,42 +1,53 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>哔哩哔哩聊天机器人</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>聊天机器人</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+        input[type="text"] {
+            width: 300px;
+            padding: 10px;
+            margin-right: 10px;
+        }
+        button {
+            padding: 10px 15px;
+        }
+        #response {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>哔哩哔哩聊天机器人</h1>
-        <form id="chat-form">
-            <textarea id="question" name="question" placeholder="请输入您的问题..." required></textarea>
-            <button type="submit">发送</button>
-        </form>
-        <div id="response-container">
-            <h2>回应：</h2>
-            <p id="response"></p>
-        </div>
-    </div>
+    <h1>聊天机器人</h1>
+    <input type="text" id="question" placeholder="输入你的问题...">
+    <button onclick="sendQuestion()">发送</button>
+    <div id="response"></div>
 
     <script>
-        document.getElementById('chat-form').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const question = document.getElementById('question').value;
-
+        function sendQuestion() {
+            const question = document.getElementById("question").value;
             fetch('/generate', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
+                    'Content-Type': 'application/x-www-form-urlencoded',
                 },
-                body: new URLSearchParams({ 'question': question })
+                body: new URLSearchParams({ question: question })
             })
             .then(response => response.json())
             .then(data => {
-                document.getElementById('response').textContent = data.response;
-                document.getElementById('question').value = '';
-            });
-        });
+                document.getElementById("response").innerText = "哔友: " + data.response;
+            })
+            .catch(error => console.error('Error:', error));
+        }
     </script>
 </body>
 </html>
