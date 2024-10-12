@@ -1,5 +1,5 @@
 mlx
 mlx-lm
-simpleaudio==1.0.4
+simpleaudio
 Flask
 requests
