@@ -21,6 +21,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 RUN pip install torch torchvision torchaudio
 
 RUN ls
+RUN python -m mlx_lm.lora -h
 
 # 对合并后的模型进行量化加速
 RUN python -m mlx_lm.lora --model models/Qwen1.5-32B-Chat --data data/ --train --iters 1000 --batch-size 16 --lora-layers 12
