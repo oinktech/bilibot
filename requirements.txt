@@ -1,3 +1,5 @@
 mlx
 mlx-lm
 simpleaudio
+Flask
+requests
