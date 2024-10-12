@@ -19,7 +19,7 @@ RUN ls -l && echo "Contents of requirements.txt:" && cat requirements.txt
 # 安装项目依赖
 RUN pip install --no-cache-dir -r requirements.txt
 
-
+RUN ls
 # 对合并后的模型进行量化加速
 RUN python tools/compress_model.py
 
