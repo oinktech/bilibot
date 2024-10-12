@@ -4,9 +4,9 @@ FROM python:3.10-slim
 # 设置工作目录
 WORKDIR /app
 
-# 安装 Git 和 supervisord
+# 安装 Git 和 supervisord 以及构建依赖
 RUN apt-get update && \
-    apt-get install -y git supervisor && \
+    apt-get install -y git supervisor build-essential libasound-dev gcc && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
