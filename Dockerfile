@@ -1,5 +1,5 @@
 # 使用官方 Python 镜像
-FROM python:3.10-slim
+FROM python:3.10
 
 # 设置工作目录
 WORKDIR /app
@@ -26,10 +26,11 @@ RUN pip install torch torchvision torchaudio
 RUN mkdir -p models && \
     git clone https://huggingface.co/Qwen/Qwen1.5-32B-Chat models/Qwen1.5-32B-Chat
 
+# 创建数据目录
+RUN mkdir -p data
+
 # 对合并后的模型进行量化加速
-# 确保 data/ 文件夹存在
-RUN mkdir -p data && \
-    python -m mlx_lm.lora --model models/Qwen1.5-32B-Chat --data data/ --train --iters 1000 --batch-size 16 --num-layers 12 --fine-tune-type lora
+RUN python -m mlx_lm.lora --model models/Qwen1.5-32B-Chat --data data/ --train --iters 1000 --batch-size 16 --num-layers 12 --fine-tune-type lora
 
 # 融合模型
 RUN python -m mlx_lm.fuse --model models/Qwen1.5-32B-Chat --save-path models/Qwen1.5-32B-Chat-FT --adapter-path models/Qwen1.5-32B-Chat-Adapters
