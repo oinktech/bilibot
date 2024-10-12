@@ -25,17 +25,9 @@ RUN ls
 
 
 # 创建 supervisord 配置文件
-RUN echo "[supervisord]" > /etc/supervisor/conf.d/supervisord.conf && \
-    echo "nodaemon=true" >> /etc/supervisor/conf.d/supervisord.conf && \
-    echo "[program:chatbot]" >> /etc/supervisor/conf.d/supervisord.conf && \
-    echo "command=python chat.py" >> /etc/supervisor/conf.d/supervisord.conf && \
-    echo "[program:webui]" >> /etc/supervisor/conf.d/supervisord.conf && \
-    echo "command=python webui.py" >> /etc/supervisor/conf.d/supervisord.conf && \
-    echo "[program:app]" >> /etc/supervisor/conf.d/supervisord.conf && \
-    echo "command=python app.py" >> /etc/supervisor/conf.d/supervisord.conf
 
 # 暴露所需的端口
-EXPOSE 9880 9881 10000
+EXPOSE 10000
 
 # 启动 supervisord
-CMD ["supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+CMD ["python3","app.py"]
