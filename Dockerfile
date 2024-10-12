@@ -22,7 +22,7 @@ RUN pip install torch torchvision torchaudio
 
 RUN ls
 # 对合并后的模型进行量化加速
-RUN python tools/compress_model.py
+
 
 # 创建 supervisord 配置文件
 RUN echo "[supervisord]" > /etc/supervisor/conf.d/supervisord.conf && \
