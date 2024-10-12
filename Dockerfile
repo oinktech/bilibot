@@ -30,4 +30,4 @@ RUN ls
 EXPOSE 10000
 
 # 启动 supervisord
-CMD ["python3","app.py"]
+CMD ["python3","main/app.py"]
