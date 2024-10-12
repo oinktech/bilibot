@@ -19,11 +19,6 @@ RUN ls -l && echo "Contents of requirements.txt:" && cat requirements.txt
 # 安装项目依赖
 RUN pip install --no-cache-dir -r requirements.txt
 
-# 模型微调训练
-RUN python -m mlx_lm.lora --model models/Qwen1.5-32B-Chat --data data/ --train --iters 1000 --batch-size 16 --num-layers 12
-
-# 合并微调后的模型
-RUN python -m mlx_lm.fuse --model models/Qwen1.5-32B-Chat --save-path models/Qwen1.5-32B-Chat-FT --adapter-path models/Qwen1.5-32B-Chat-Adapters
 
 # 对合并后的模型进行量化加速
 RUN python tools/compress_model.py
