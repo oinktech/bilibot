@@ -18,6 +18,7 @@ RUN ls -l && echo "Contents of requirements.txt:" && cat requirements.txt
 
 # 安装项目依赖
 RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install torch torchvision torchaudio
 
 RUN ls
 # 对合并后的模型进行量化加速
