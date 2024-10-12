@@ -10,15 +10,26 @@ from mlx_lm import load, generate
 
 app = Flask(__name__)
 
-def generate_speech(text, port):
+# Load model and tokenizer
+with open('../models/Qwen1.5-32B-Chat-FT-4Bit/tokenizer_config.json', 'r') as file:
+    tokenizer_config = json.load(file)
+
+model, tokenizer = load(
+    "../models/Qwen1.5-32B-Chat-FT-4Bit/",
+    tokenizer_config=tokenizer_config
+)
+
+def generate_speech(text):
     time_ckpt = time.time()
     data = {
         "text": text,
         "text_language": "zh"
     }
-    response = requests.post(f"http://127.0.0.1:{port}", json=data)
+    # 这里假设您将音频服务在localhost上运行
+    response = requests.post("https://bilibot.onrender.com/generate_audio", json=data)
     if response.status_code == 400:
         raise Exception(f"GPT-SoVITS ERROR: {response.message}")
+    
     audio_data = io.BytesIO(response.content)
     with wave.open(audio_data, 'rb') as wave_read:
         audio_frames = wave_read.readframes(wave_read.getnframes())
@@ -35,15 +46,6 @@ def split_text(text):
     text = re.sub(pattern, '', text)
     return text
 
-# Load model and tokenizer
-with open('../models/Qwen1.5-32B-Chat-FT-4Bit/tokenizer_config.json', 'r') as file:
-    tokenizer_config = json.load(file)
-
-model, tokenizer = load(
-    "../models/Qwen1.5-32B-Chat-FT-4Bit/",
-    tokenizer_config=tokenizer_config
-)
-
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -52,9 +54,9 @@ def index():
 def generate_response():
     question = request.form['question']
     question = split_text(question)
-    
+
     # Generate speech for the question
-    generate_speech(question, 9880)
+    generate_speech(question)
 
     sys_msg = 'You are a helpful assistant'
     template = '你是一个友好的助手。请回答以下问题：{usr_msg}'
@@ -75,7 +77,7 @@ def generate_response():
     
     response = split_text(response)
     # Generate speech for the response
-    generate_speech(response, 9881)
+    generate_speech(response)
 
     return jsonify({'response': response})
 
