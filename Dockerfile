@@ -7,11 +7,17 @@ WORKDIR /app
 # 安装 Git 和 supervisord
 RUN apt-get update && apt-get install -y git supervisor && apt-get clean
 
+
+
 # 克隆项目
 RUN git clone -b patch-1 https://github.com/oinktech/bilibot.git .
 
+RUN cd patch-1
+
 # 安装项目依赖
 RUN pip install --no-cache-dir -r requirements.txt
+
+
 
 # 模型微调训练
 RUN python -m mlx_lm.lora --model models/Qwen1.5-32B-Chat --data data/ --train --iters 1000 --batch-size 16 --lora-layers 12
