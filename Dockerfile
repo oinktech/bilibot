@@ -17,7 +17,7 @@ RUN git clone -b patch-1 https://github.com/oinktech/bilibot.git .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # 安装 PyTorch 和相关库
-RUN pip install torch torchvision torchaudio
+RUN pip install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cpu
 
 # 创建模型和数据目录
 RUN mkdir -p models && mkdir -p data
